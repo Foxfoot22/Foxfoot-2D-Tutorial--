@@ -46,8 +46,8 @@ func _input(event):
 		#$AnimatedSprite.position = event.position	
 		#$CollisionShape2D.position = event.position	
 
-	if event is InputEventMouseMotion:
-		target = event.position
+	##if event is InputEventMouseMotion:
+		##target = event.position
 		# While dragging, move the sprite with the mouse.
 		##$AnimatedSprite.position = event.position
 		##$CollisionShape2D.position = event.position	

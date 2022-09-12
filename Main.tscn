@@ -81,6 +81,7 @@ tint_progress = Color( 0.0196078, 0.0196078, 0.0196078, 0.521569 )
 [node name="HealthOver" parent="HUD/HealthBar" index="1"]
 margin_right = 217.0
 rect_scale = Vector2( 1.00819, 0.693514 )
+texture_under = null
 tint_progress = Color( 0.647059, 0.384314, 0.788235, 1 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
