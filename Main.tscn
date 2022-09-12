@@ -1,0 +1,121 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://Mob.tscn" type="PackedScene" id=3]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://art/gameover.wav" type="AudioStream" id=5]
+[ext_resource path="res://art/House In a Forest Loop.ogg" type="AudioStream" id=6]
+[ext_resource path="res://art/vector-fizz-bubble-background.jpg" type="Texture" id=7]
+[ext_resource path="res://ParallaxBackground.gd" type="Script" id=8]
+[ext_resource path="res://ParallaxLayer.gd" type="Script" id=9]
+[ext_resource path="res://HealthBar.tscn" type="PackedScene" id=10]
+[ext_resource path="res://pepSound3.mp3" type="AudioStream" id=11]
+[ext_resource path="res://Food.tscn" type="PackedScene" id=12]
+[ext_resource path="res://phaserDown3.mp3" type="AudioStream" id=13]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 479, 6, 0, 0, 0, 0, 481, 725, 0, 0, 0, 0, 2, 727, 0, 0, 0, 0, 1, 4, 0, 0, 0, 0, 1, 1 )
+}
+
+[node name="Main" type="Node" groups=["HealthBar"]]
+script = ExtResource( 2 )
+mob_scene = ExtResource( 3 )
+food_scene = ExtResource( 12 )
+food_scene2 = ExtResource( 12 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="CanvasLayer"]
+script = ExtResource( 8 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="CanvasLayer/ParallaxBackground"]
+motion_mirroring = Vector2( 480, 720 )
+script = ExtResource( 9 )
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/ParallaxBackground/ParallaxLayer"]
+position = Vector2( 239.5, 360.25 )
+scale = Vector2( 2.2, 2.2 )
+texture = ExtResource( 7 )
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Position2D" parent="."]
+position = Vector2( 240, 450 )
+
+[node name="MobPath" type="Path2D" parent="."]
+position = Vector2( 0.00416638, 0.0110192 )
+scale = Vector2( 0.995833, 0.988981 )
+curve = SubResource( 1 )
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2( 1, 1 )
+rotation = 0.0104598
+
+[node name="HUD" parent="." instance=ExtResource( 4 )]
+
+[node name="HealthBar" parent="HUD" instance=ExtResource( 10 )]
+margin_left = 116.0
+margin_top = 630.0
+margin_right = -148.0
+margin_bottom = -68.0
+rect_scale = Vector2( 1.165, 1.62093 )
+healthy_color = Color( 0.705882, 0.54902, 0.788235, 0.701961 )
+
+[node name="HealthUnder" parent="HUD/HealthBar" index="0"]
+margin_right = 219.0
+margin_bottom = 28.0
+rect_scale = Vector2( 1.00134, 0.69 )
+tint_under = Color( 0.0666667, 0.0588235, 0.0588235, 0.505882 )
+tint_over = Color( 0.886275, 0.109804, 0.109804, 0.807843 )
+tint_progress = Color( 0.0196078, 0.0196078, 0.0196078, 0.521569 )
+
+[node name="HealthOver" parent="HUD/HealthBar" index="1"]
+margin_right = 217.0
+rect_scale = Vector2( 1.00819, 0.693514 )
+tint_progress = Color( 0.647059, 0.384314, 0.788235, 1 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+scale = Vector2( 0.4, 0.4 )
+speed = 600
+
+[node name="AnimatedSprite" parent="Player" index="0"]
+playing = true
+
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+
+[node name="OnHit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 13 )
+volume_db = 12.0
+
+[node name="EatSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
+volume_db = 8.0
+
+[connection signal="starting_health" from="." to="HUD/HealthBar" method="_on_Main_starting_health"]
+[connection signal="starting_health" from="." to="Player" method="_on_Main_starting_health"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
+[connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="play_onhit_sfx" from="HUD/HealthBar" to="." method="_on_HealthBar_play_onhit_sfx"]
+[connection signal="food_sound" from="Player" to="." method="_on_Player_food_sound"]
+[connection signal="health_depleted" from="Player" to="." method="_on_Player_health_depleted"]
+[connection signal="mob_sound" from="Player" to="." method="_on_Player_mob_sound"]
+[connection signal="player_hit" from="Player" to="HUD/HealthBar" method="_on_health_updated"]
+
+[editable path="HUD"]
+[editable path="HUD/HealthBar"]
+[editable path="Player"]

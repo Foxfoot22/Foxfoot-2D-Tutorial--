@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/zap1.mp3-439b8a4a802a7c650da3d3bdb67230d9.mp3str"
+
+[deps]
+
+source_file="res://zap1.mp3"
+dest_files=[ "res://.import/zap1.mp3-439b8a4a802a7c650da3d3bdb67230d9.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
