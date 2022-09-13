@@ -91,6 +91,7 @@ scale = Vector2( 0.4, 0.4 )
 speed = 600
 
 [node name="AnimatedSprite" parent="Player" index="0"]
+frame = 1
 playing = true
 
 [node name="Music" type="AudioStreamPlayer2D" parent="."]
@@ -108,7 +109,7 @@ stream = ExtResource( 11 )
 volume_db = 8.0
 
 [node name="BigFishTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 20.0
 
 [connection signal="starting_health" from="." to="HUD/HealthBar" method="_on_Main_starting_health"]
 [connection signal="starting_health" from="." to="Player" method="_on_Main_starting_health"]

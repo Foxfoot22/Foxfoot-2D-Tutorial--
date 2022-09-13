@@ -19,6 +19,7 @@ height = 0.0
 [node name="BigFish" type="RigidBody2D"]
 mass = 3.02
 gravity_scale = -0.1
+contact_monitor = true
 linear_velocity = Vector2( -100, 30 )
 applied_force = Vector2( -100, 0 )
 script = ExtResource( 3 )
@@ -28,7 +29,6 @@ position = Vector2( 743, 348 )
 scale = Vector2( 0.4, 0.4 )
 frames = SubResource( 1 )
 animation = "swim"
-frame = 1
 speed_scale = 0.5
 playing = true
 
