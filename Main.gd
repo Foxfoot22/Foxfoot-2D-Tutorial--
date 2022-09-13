@@ -3,11 +3,14 @@ extends Node
 export(PackedScene) var mob_scene
 export(PackedScene) var food_scene
 export(PackedScene) var food_scene2
+export(PackedScene) var big_fish_scene
+
 
 var score
 var value
 
 signal starting_health
+##signal fish_bite
 
 # Called when the node enters the scene tree for the first time.
 
@@ -17,6 +20,7 @@ func _ready():
 func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
+	$BigFishTimer.stop()
 	$HUD.show_game_over()
 	$Music.stop()
 	$DeathSound.play()
@@ -29,6 +33,7 @@ func new_game():
 	##$Player.set_health(100)
 	$Player.start($StartPosition.position)
 	$StartTimer.start()
+	$BigFishTimer.start()
 	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
 	get_tree().call_group("mobs", "queue_free")
@@ -84,7 +89,6 @@ func _on_Player_health_depleted():
 
 
 
-
 func _on_HealthBar_play_onhit_sfx():
 	##$OnHit.play()
 	pass
@@ -95,3 +99,13 @@ func _on_Player_food_sound():
 
 func _on_Player_mob_sound():
 	$OnHit.play()
+
+
+func _on_BigFishTimer_timeout():
+
+	var big_fish = big_fish_scene.instance()
+
+	add_child(big_fish)
+	
+func on_fish_bite():
+	print("fish bite")
